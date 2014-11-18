@@ -19,7 +19,9 @@ define([
         },
 
         addProduct: function () {
-            var addProductView = new ProductView();
+            var addProductView = new ProductView({
+                el: "#page"
+            });
             addProductView.render();
         }
     });

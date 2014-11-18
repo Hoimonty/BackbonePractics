@@ -13,7 +13,7 @@ define([
 ], function ($, _, Backbone, jqueryTemp, Product, ProductCollection, ProductDetailView, ProductListView, productTemplate, ProductListTemplete) {
 
     var mainView = Backbone.View.extend({
-        el: $("#page"),
+       // el: $("#page"),
         render: function () {
             var self = this;
             this.$el.html(productTemplate);
