@@ -1,11 +1,8 @@
-﻿define(['underscore', 'backbone'],
-    function (_, Backbone) {
-        var Checkbox = Backbone.Model.extend({
+﻿define(['underscore', 'backbone', 'models/Forms/Fields/Field'],
+    function (_, Backbone,Field) {
+        var Checkbox = Field.extend({
             default: {
-                Id: 0,
-                Name:"",
-                Description: ""
-              
+                Type: 'Checkbox'
             }
         });
         return Checkbox;

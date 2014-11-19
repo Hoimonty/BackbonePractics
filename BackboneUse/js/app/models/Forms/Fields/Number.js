@@ -1,12 +1,9 @@
-﻿define(['underscore', 'backbone'],
-    function (_, Backbone) {
-        var Number = Backbone.Model.extend({
+﻿define(['underscore', 'backbone', 'models/Forms/Fields/Field'],
+    function (_, Backbone,Field) {
+        var Number = Field.extend({
             default: {
-                Id: 0,
-                Name: "",
-                Description: "",
-                Mandatory: false
-
+                Mandatory: false,
+                Type: 'Number'
             }
         });
         return Number;

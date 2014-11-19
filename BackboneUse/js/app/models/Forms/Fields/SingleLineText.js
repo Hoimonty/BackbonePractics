@@ -1,13 +1,14 @@
-﻿define(['underscore','backbone'],
-    function (_,Backbone) {
-        var SinglelineText = Backbone.Model.extend({
+﻿/// <reference path="SingleLineText.js" />
+define(['underscore', 'backbone', 'models/Forms/Fields/Field'],
+    function (_, Backbone, Field) {
+
+        var SinglelineText = Field.extend({
             default: {
-                Id: 0,
-                Name:"",
-                Description: "",
-                Mandatory: false
+                Mandatory: false,
+                Type: 'SingleLine'
             }
         });
+
         return SinglelineText;
 
     })

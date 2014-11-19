@@ -1,18 +1,20 @@
 
 
 
+
 define([
   'jquery',
   'underscore',
   'backbone',
-  'views/product/ProductContainerView'
-], function ($, _, Backbone, ProductView) {
+  'views/product/ProductContainerView',
+  'views/Forms/Fields/FormConfigView'
+], function ($, _, Backbone, ProductView,FormConfigView) {
 
     var AppRouter = Backbone.Router.extend({
         routes: {
             'addProduct': 'addProduct',
             // Default
-            '*actions': 'addProduct'
+            '*actions': 'configurationForm'
         },
         initialize: function () {
             Backbone.history.start();
@@ -23,6 +25,12 @@ define([
                 el: "#page"
             });
             addProductView.render();
+        },
+        configurationForm: function () {
+            var formConfigView = new FormConfigView({
+                el: "#page"
+            });
+            formConfigView.render();
         }
     });
 

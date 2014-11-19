@@ -8,6 +8,7 @@ require.config({
         backbone: '../libs/backbone/backbone-min',
         jquery_tmpl: '../libs/jquery/jquery.tmpl',
         text: '../libs/require/text',
+        jquery_ui: '../libs/jquery/jquery-ui',
         app: 'app',
         templates: 'templates'
     },
@@ -17,6 +18,10 @@ require.config({
             exports: "Backbone"
         },
         "jquery_tmpl": {
+            deps: ["jquery"],
+            exports: "$"
+        },
+        "jquery_ui": {
             deps: ["jquery"],
             exports: "$"
         }
