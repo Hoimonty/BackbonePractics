@@ -1,6 +1,7 @@
-﻿/// <reference path="../../../Repositories/FormRepository.js" />
-define(['underscore', 'backbone', 'jquery_ui', 'text!templates/Forms/FormConfigTemplete.html', 'Repositories/FormRepository', 'text!templates/Forms/TypeTemplete.html'],
-    function (_,Backbone,Jquery_UI,templete,FromRepository,TypeListTemplete) {
+﻿/// <reference path="FieldViewFactory.js" />
+
+define(['underscore', 'backbone', 'jquery_ui', 'text!templates/Forms/FormConfigTemplete.html', 'Repositories/FormRepository', 'text!templates/Forms/TypeTemplete.html', 'views/Forms/Fields/FieldViewFactory'],
+    function (_, Backbone, Jquery_UI, templete, FromRepository, TypeListTemplete, FieldViewFactory) {
         var formConfigView = Backbone.View.extend({
 
             render: function () {
@@ -12,8 +13,9 @@ define(['underscore', 'backbone', 'jquery_ui', 'text!templates/Forms/FormConfigT
                         var view = FieldViewFactory.GetView(self.collection.models[i]);
                         view.render(function ($viewNode) {
 
+                           
                         });
-                        self.$el.find('#listType').append($(TypeListTemplete).tmpl(self.collection.models[i].attributes));
+                      //  self.$el.find('#listType').append($(TypeListTemplete).tmpl(self.collection.models[i].attributes));
                     }
                 });
                 $("#listType li").draggable({
