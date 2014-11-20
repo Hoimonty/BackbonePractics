@@ -1,7 +1,7 @@
 ﻿/// <reference path="FieldViewFactory.js" />
 
-define(['underscore', 'backbone', 'jquery_ui', 'text!templates/Forms/FormConfigTemplete.html', 'Repositories/FormRepository', 'text!templates/Forms/TypeTemplete.html', 'views/Forms/Fields/FieldViewFactory'],
-    function (_, Backbone, Jquery_UI, templete, FromRepository, TypeListTemplete, FieldViewFactory) {
+define(['underscore', 'backbone', 'jquery_ui', 'text!templates/Forms/FormConfigTemplete.html', 'Repositories/FormRepository', 'text!templates/Forms/TypeTemplete.html', 'views/Forms/Fields/FieldViewFactory', 'models/Forms/Fields/Field'],
+    function (_, Backbone, Jquery_UI, templete, FromRepository, TypeListTemplete, FieldViewFactory, Field) {
         var formConfigView = Backbone.View.extend({
 
             render: function () {
@@ -10,7 +10,9 @@ define(['underscore', 'backbone', 'jquery_ui', 'text!templates/Forms/FormConfigT
                 FromRepository.GetAllowedFields(function (data) {
                     self.collection = data;
                     for (var i = 0; i < self.collection.models.length; i++) {
-                        var view = FieldViewFactory.GetView(self.collection.models[i]);
+                        var mood='Caption';
+                        
+                        var view = FieldViewFactory.GetView(self.collection.models[i], mood, '#listType');
                         view.render(function ($viewNode) {
 
                            
@@ -22,12 +24,24 @@ define(['underscore', 'backbone', 'jquery_ui', 'text!templates/Forms/FormConfigT
                     appendTo: "body",
                     helper: "clone"
                 });
-                $("#right ol").droppable({
+                $("#right ul").droppable({
                     drop: function (event, ui) {
-                        $(this).find(".placeholder").remove();
-                        $("<li></li>").text(ui.draggable.text()).appendTo(this);
+                      //  alert(ui.helper.attributes);
+                       // $(this).find(".placeholder").remove();
+                        var type = ui.draggable.text();
+                        var field = new Field({ 'Type': type });
+                        var view = FieldViewFactory.GetView(field, 'Configuration', '#sortable');
+                        view.render(function ($viewNode) {
+
+
+                        });
+                     //   $("<li class='ui-widget-content'></li>").html(ui.draggable.html()).appendTo(this);
+                        $(".accordion").accordion({
+                            collapsible: true
+                        });
                     }
                 });
+               
             }
         });
 
