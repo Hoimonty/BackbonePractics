@@ -7,7 +7,7 @@ define([
   'underscore',
   'backbone',
   'views/product/ProductContainerView',
-  'views/Forms/Fields/FormConfigView'
+  'views/Forms/FormConfigView'
 ], function ($, _, Backbone, ProductView,FormConfigView) {
 
     var AppRouter = Backbone.Router.extend({

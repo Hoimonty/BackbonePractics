@@ -1,29 +1,29 @@
-﻿define(['underscore', 'backbone', 'models/Forms/Fields/Checkbox', 'text!templates/Forms/FormTemplete.html', 'text!templates/Forms/TypeTemplete.html'],
-    function (_, Backbone, CheckboxModel, FormTemplete, TypeListTemplete) {
+﻿define(['underscore', 'backbone', 'models/Forms/Fields/Checkbox', 'text!templates/Forms/Fields/CheckboxViewTemplete.html'],
+    function (_, Backbone, CheckboxModel, Templete) {
         var CheckboxView = Backbone.View.extend({
             initialize: function (options) {
                 this.mood = options.mood;
             },
+            Template: {
+                Caption: $(Templete).find('#_t_Caption'),
+                Configuration: $(Templete).find('#_t_Configuration'),
+            },
             render: function (onRenderCompleted) {
-                if (this.mood == 'Caption') {
-                    $(this.$el).append($(TypeListTemplete).tmpl(this.model.attributes));
-                    onRenderCompleted(this.$el);
-                }
-                // this.$el.empty();
-                //  $('#listType').append($(TypeListTemplete).tmpl(this.model.attributes));
-                if (this.mood == 'Configuration') {
-                    var checkboxModel = new CheckboxModel();
-                  
-                    checkboxModel.Type = 'Checkbox';
-                    $(this.$el).append($(FormTemplete).tmpl(checkboxModel));
-                    onRenderCompleted(this.$el);
-                }
-              
-               
+                this.setElement(GetTemplate.apply(this).tmpl(this.model.toJSON()));
+                onRenderCompleted(this.$el);
             }
         });
 
-
+        function GetTemplate() {
+            if (this.mood == 'Caption')
+            {
+                return this.Template.Caption;
+            }
+            if (this.mood = 'Configuration')
+            {
+                return this.Template.Configuration;
+            }
+        }
 
         return CheckboxView;
     });

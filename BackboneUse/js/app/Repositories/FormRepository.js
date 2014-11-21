@@ -5,8 +5,8 @@ define([
 
         var fieldCollectionList = new FieldCollection();
         fieldCollectionList.add(new Field({ 'Id': 1, 'Type': 'SingleLineText' }));
-        fieldCollectionList.add(new Field({ 'Id': 2, 'Type': 'Number' }));
         fieldCollectionList.add(new Field({ 'Id': 3, 'Type': 'Checkbox' }));
+        fieldCollectionList.add(new Field({ 'Id': 2, 'Type': 'Number' }));
 
         var FormRepository = {
             GetAllowedFields: function (onSuccess) {
