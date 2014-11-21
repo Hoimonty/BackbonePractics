@@ -9,10 +9,10 @@ define(['jquery', 'backbone', 'text!templates/product/ProductDetailTemplete.html
             initialize: function (options) {
                 this.options.OnProductSave = options.OnProductSave;
             },
-            render: function () {
+            render: function (onRenderComplete) {
                 var self = this;
                 RenderProduct.apply(this);
-                return this.$el;
+                onRenderComplete(this.$el);
             },
             RefreshView: function () {
                 RenderProduct.apply(this);

@@ -14,12 +14,12 @@ define([
 
     var mainView = Backbone.View.extend({
        // el: $("#page"),
-        render: function () {
+        render: function (onRenderCompleted) {
             var self = this;
             this.$el.html(productTemplate);
             //  this.$el.append(ProductListTemplete);
             var formTable = new ProductListView({
-                el: "#table-style",
+               // el: "#table-style",
                 OnProductUpdate: function (product) {
                     var formRight = new ProductDetailView({
                         model: product,
@@ -27,12 +27,17 @@ define([
                             formRight.remove();
                         }
                     });
-                    $('#right').empty().append(formRight.render());
+                    formRight.render(function ($viewNode) {
+                        self.$('#right').html($viewNode);
+
+                    });
                 }
             });
-            formTable.render();
+            formTable.render(function ($viewNode) {
+                self.$('#table-style').append($viewNode);
+            });
             var productAddView = new ProductDetailView({
-                el: "#left",
+                //el: "#left",
                 model: new Product(),
                 OnProductSave: function (item) {
                     formTable.AddProduct(item);
@@ -40,7 +45,12 @@ define([
                     productAddView.RefreshView();
                 }
             });
-            productAddView.render();
+            productAddView.render(
+                function ($viewNode) {
+                    self.$('#left').html($viewNode);
+
+            });
+            onRenderCompleted(this.$el);
         }
       
     })

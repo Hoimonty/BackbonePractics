@@ -7,33 +7,41 @@ define([
   'underscore',
   'backbone',
   'views/product/ProductContainerView',
-  'views/Forms/FormConfigView'
-], function ($, _, Backbone, ProductView,FormConfigView) {
+  'views/Forms/FormConfigView',
+  'views/FormContents/FormContentView'
+], function ($, _, Backbone, ProductView,FormConfigView,FormContent) {
 
     var AppRouter = Backbone.Router.extend({
         routes: {
-            'addProduct': 'addProduct',
-            // Default
-            '*actions': 'configurationForm'
+            'New': 'addProduct',
+            'Configuration': 'configurationForm',
+            '*actions': 'FormContentView'
         },
         initialize: function () {
             Backbone.history.start();
         },
 
         addProduct: function () {
-            var addProductView = new ProductView({
-                el: "#page"
+            var addProductView = new ProductView();
+            addProductView.render(function ($viewNode) {
+                $('#page').html($viewNode);
             });
-            addProductView.render();
         },
         configurationForm: function () {
-            var formConfigView = new FormConfigView({
-                el: "#page"
+            var formConfigView = new FormConfigView();
+            formConfigView.render(function ($viewNode) {
+                $('#page').html($viewNode);
             });
-            formConfigView.render();
+        },
+        FormContentView: function () {
+            var formContentView = new FormContent();
+            formContentView.render(function ($viewNode) {
+                $('#page').html($viewNode);
+            });
+          
         }
     });
 
-    return AppRouter
+    return AppRouter;
 });
 

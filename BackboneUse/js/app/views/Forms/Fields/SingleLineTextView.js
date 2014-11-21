@@ -1,6 +1,6 @@
 ﻿
-define(['underscore', 'backbone', 'models/Forms/Fields/SingleLineText', 'text!templates/Forms/Fields/SingleLineTextViewTemplete.html'],
-    function (_, Backbone, SingleLineTextModel, Templete) {
+define(['backbone', 'text!templates/Forms/Fields/SingleLineTextViewTemplete.html'],
+    function (Backbone, Templete) {
         var SingleLineTextView = Backbone.View.extend({
             initialize: function (options) {
                 this.mood = options.mood;

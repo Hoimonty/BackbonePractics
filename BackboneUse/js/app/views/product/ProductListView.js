@@ -10,6 +10,7 @@ define([
   'text!templates/product/ProductListTemplete.html'
 ], function ($, _, Backbone, jqueryTemp, Product, ProductCollection, InserProductView, Template) {
     var productListView = Backbone.View.extend({
+        tagName: 'tbody',
         events: {
             'click .update': 'UpdateItem'
         },
@@ -17,10 +18,10 @@ define([
             this.options.OnProductUpdate = options.OnProductUpdate;
             this.collection = new ProductCollection();
         },
-        render: function () {
+        render: function (onRenderCompleted) {
             var self = this;
             RenderProducts.apply(this);
-            return this.$el;
+            onRenderCompleted(this.$el);
         },
         AddProduct: function (item) {
             item.set('id', new Date().getTime());

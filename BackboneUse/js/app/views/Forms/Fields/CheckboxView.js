@@ -1,5 +1,5 @@
-﻿define(['underscore', 'backbone', 'models/Forms/Fields/Checkbox', 'text!templates/Forms/Fields/CheckboxViewTemplete.html'],
-    function (_, Backbone, CheckboxModel, Templete) {
+﻿define(['backbone',  'text!templates/Forms/Fields/CheckboxViewTemplete.html'],
+    function (Backbone, Templete) {
         var CheckboxView = Backbone.View.extend({
             initialize: function (options) {
                 this.mood = options.mood;

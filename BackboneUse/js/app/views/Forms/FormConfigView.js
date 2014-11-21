@@ -1,10 +1,10 @@
 ﻿
 
-define(['underscore', 'backbone', 'jquery_ui', 'text!templates/Forms/FormConfigTemplete.html', 'Repositories/FormRepository', 'text!templates/Forms/TypeTemplete.html', 'views/Forms/Fields/FieldViewFactory', 'models/Forms/Fields/Field'],
-    function (_, Backbone, Jquery_UI, templete, FromRepository, TypeListTemplete, FieldViewFactory, Field) {
+define(['underscore', 'backbone', 'jquery_ui', 'text!templates/Forms/FormConfigTemplete.html', 'Repositories/FormRepository',  'views/Forms/Fields/FieldViewFactory'],
+    function (_, Backbone, Jquery_UI, templete, FromRepository, FieldViewFactory) {
         var formConfigView = Backbone.View.extend({
 
-            render: function () {
+            render: function (onRenderCompleted) {
                 var self = this;
                 this.$el.html(templete);
                 FromRepository.GetAllowedFields(function (data) {
@@ -21,7 +21,7 @@ define(['underscore', 'backbone', 'jquery_ui', 'text!templates/Forms/FormConfigT
                     appendTo: "body",
                     helper: "clone"
                 });
-                $("#right ul").droppable({
+                $("#right>div").droppable({
                     drop: function (event, ui) {
                         var type = ui.draggable.data('type');
                         var field = self.collection.where({ Type: type })
@@ -33,10 +33,9 @@ define(['underscore', 'backbone', 'jquery_ui', 'text!templates/Forms/FormConfigT
                         $(".accordion").accordion({
                             collapsible: true
                         });
-                       
                     }
                 });
-
+                onRenderCompleted(this.$el);
             }
         });
 

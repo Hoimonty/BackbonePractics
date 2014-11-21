@@ -1,8 +1,7 @@
 ﻿define([
     'backbone',
-    'models/Forms/Fields/Number',
     'text!templates/Forms/Fields/NumberViewTemplate.html'],
-    function (Backbone, NumberModel, Templete) {
+    function (Backbone,  Templete) {
 
         var NumberView = Backbone.View.extend({
             Template: {
