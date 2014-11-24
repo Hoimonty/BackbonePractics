@@ -8,14 +8,15 @@ define([
   'backbone',
   'views/product/ProductContainerView',
   'views/Forms/FormConfigView',
-  'views/FormContents/FormContentView'
-], function ($, _, Backbone, ProductView,FormConfigView,FormContent) {
+  'views/FormContents/FormListView',
+  'views/Items/ItemAddView',
+], function ($, _, Backbone, ProductView, FormConfigView, FormListView, itemAddView) {
 
     var AppRouter = Backbone.Router.extend({
         routes: {
-            'New': 'addProduct',
+            'New': 'ItemAddView',
             'Configuration': 'configurationForm',
-            '*actions': 'FormContentView'
+            '*actions': 'ListView'
         },
         initialize: function () {
             Backbone.history.start();
@@ -33,9 +34,16 @@ define([
                 $('#page').html($viewNode);
             });
         },
-        FormContentView: function () {
-            var formContentView = new FormContent();
-            formContentView.render(function ($viewNode) {
+        ListView: function () {
+            var formListView = new FormListView();
+            formListView.render(function ($viewNode) {
+                $('#page').html($viewNode);
+            });
+          
+        },
+        ItemAddView: function () {
+            var addView = new itemAddView();
+            addView.render(function ($viewNode) {
                 $('#page').html($viewNode);
             });
           

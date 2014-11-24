@@ -3,7 +3,9 @@
 define(['underscore', 'backbone', 'jquery_ui', 'text!templates/Forms/FormConfigTemplete.html', 'Repositories/FormRepository',  'views/Forms/Fields/FieldViewFactory'],
     function (_, Backbone, Jquery_UI, templete, FromRepository, FieldViewFactory) {
         var formConfigView = Backbone.View.extend({
-
+            event: {
+                'click #btnSave': 'SaveItem'
+            },
             render: function (onRenderCompleted) {
                 var self = this;
                 this.$el.html(templete);
@@ -26,6 +28,7 @@ define(['underscore', 'backbone', 'jquery_ui', 'text!templates/Forms/FormConfigT
                         var type = ui.draggable.data('type');
                         var field = self.collection.where({ Type: type })
                         var view = FieldViewFactory.GetView(field[0], 'Configuration');
+                        FromRepository.AddAllowedFields(type);
                         view.render(function ($viewNode) {
                             self.$('#sortable').append($viewNode);
                         });
@@ -36,6 +39,9 @@ define(['underscore', 'backbone', 'jquery_ui', 'text!templates/Forms/FormConfigT
                     }
                 });
                 onRenderCompleted(this.$el);
+            },
+            SaveItem: function (event) {
+                var allCollection = FromRepository.AddAllowedFields("");
             }
         });
 
