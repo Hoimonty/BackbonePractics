@@ -17,11 +17,11 @@ define(['underscore', 'backbone', 'jquery_ui', 'text!templates/Forms/FormConfigT
                         });
                     }
                 });
-                $("#listType>div").draggable({
+                self.$("#listType>div").draggable({
                     appendTo: "body",
                     helper: "clone"
                 });
-                $("#right>div").droppable({
+                self.$("#right>div").droppable({
                     drop: function (event, ui) {
                         var type = ui.draggable.data('type');
                         var field = self.collection.where({ Type: type })
