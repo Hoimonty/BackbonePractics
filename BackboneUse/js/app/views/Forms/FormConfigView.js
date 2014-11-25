@@ -28,7 +28,7 @@ define(['underscore', 'backbone', 'jquery_ui', 'text!templates/Forms/FormConfigT
                         var type = ui.draggable.data('type');
                         var field = self.collection.where({ Type: type })
                         var view = FieldViewFactory.GetView(field[0], 'Configuration');
-                        FromRepository.AddAllowedFields(type);
+                        FromRepository.AddFields(type);
                         view.render(function ($viewNode) {
                             self.$('#sortable').append($viewNode);
                         });
@@ -42,6 +42,7 @@ define(['underscore', 'backbone', 'jquery_ui', 'text!templates/Forms/FormConfigT
             },
             SaveItem: function (event) {
                 var allCollection = FromRepository.AddAllowedFields("");
+                FromRepository.SaveForm(allCollection);
             }
         });
 

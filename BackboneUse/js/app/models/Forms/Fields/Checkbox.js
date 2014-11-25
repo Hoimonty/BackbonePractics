@@ -3,6 +3,12 @@
         var Checkbox = Field.extend({
             default: {
                 Type: 'Checkbox'
+            },
+            CreateDefaultValue: function () {
+                return new CheckboxFieldValue({
+                    Id: new Date().getTime(),
+                    FieldId: this.Id
+                });
             }
         });
         return Checkbox;
