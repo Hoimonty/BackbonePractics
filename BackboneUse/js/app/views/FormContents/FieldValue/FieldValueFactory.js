@@ -5,13 +5,13 @@
         var FieldValueViewFactory = {
             GetView: function (model, mood) {
                 if (model.Type == 'SingleLineText') {
-                    return new SingleLineTextView({ model: model, mood: mood });
+                    return new SingleLineTextView({ model: model });
                 }
                 else if (model.Type == 'Number') {
-                    return new NumberView({ model: model, mood: mood });
+                    return new NumberView({ model: model });
                 }
                 else if (model.Type == 'Checkbox') {
-                    return new CheckboxView({ model: model, mood: mood });
+                    return new CheckboxView({ model: model });
                 }
             }
         }

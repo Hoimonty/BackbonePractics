@@ -1,10 +1,6 @@
-﻿/// <reference path="../models/Forms/FieldValues/FieldValueCollection.js" />
-/// <reference path="../models/Forms/FieldValues/FieldValue.js" />
-/// <reference path="../models/Forms/Form.js" />
-/// <reference path="../models/Forms/Fields/Field.js" />
-define([
-    'underscore', 'backbone', 'models/Forms/Fields/Field', 'models/Forms/Fields/FieldCollection', 'models/Forms/FieldValues/FieldValue', 'models/Forms/FieldValues/FieldValueCollection', 'models/Forms/Form'],
-    function (_, Backboone, Field, FieldCollection, FieldValue, FieldValueCollection, Form) {
+﻿define([
+    'underscore', 'backbone', 'models/Forms/Fields/Field', 'models/Forms/Fields/FieldCollection', 'models/Forms/FieldValues/FieldValue', 'models/Forms/FieldValues/FieldValueCollection', 'models/Forms/Form', 'models/Forms/FormContent'],
+    function (_, Backboone, Field, FieldCollection, FieldValue, FieldValueCollection, Form,FormContent) {
 
         var _Forms = {};
         var _FormContents = {};
@@ -20,6 +16,10 @@ define([
             GetAllowedFields: function (onSuccess) {
                 onSuccess(fieldCollectionList);
             },
+            GetField: function (formId, fieldId, onSuccess) {
+                var field = _Forms[formId].Fields.where({ Id: fieldId });
+                return field;
+            },
             SaveForm: function (fieldCollection, onSuccess) {
                 var id = new Date().getTime();
                 var form = new Form({Id:id, Fields: fieldCollection})
@@ -27,10 +27,14 @@ define([
 
             },
             GetDefaultFormContent: function (formId, onSuccess) {
-                form = _Forms[formId];
+                var form = new Form();
+              //  Form = _Forms[formId];
                 onSuccess(form, form.CreateDefaultFormContent());
             },
-            SaveFormContent: function (fieldID,fieldValue) {
+            SaveFormContent: function (formContent) {
+                _FormContents[formContent.Id] = formContent;
+            },
+            SaveFieldValue: function (fieldID, fieldValue) {
                 fieldValueCollection.add(new FieldValue({ 'Id': new Date().getTime(), 'FieldId': fieldID, 'Value': fieldValue }));
                 return fieldValueCollection.toJSON();
             },
@@ -42,7 +46,7 @@ define([
                 return addedFieldCollectionList.toJSON();
             },
             GetFieldValueCollection: function () {
-                return fieldValueCollection.toJSON();
+                return _FormContents;
             }
         }
 
