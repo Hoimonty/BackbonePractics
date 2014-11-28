@@ -27,9 +27,9 @@
 
             },
             GetDefaultFormContent: function (formId, onSuccess) {
-                var form = new Form();
+               // var form = new Form();
               //  Form = _Forms[formId];
-                onSuccess(form, form.CreateDefaultFormContent());
+                onSuccess(Form, Form.CreateDefaultFormContent());
             },
             SaveFormContent: function (formContent) {
                 _FormContents[formContent.Id] = formContent;
