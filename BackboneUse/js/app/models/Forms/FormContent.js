@@ -8,7 +8,7 @@
                 FieldValues: null
             },
             initialize: function () {
-                FieldValues = new FieldValueCollection();
+                this.FieldValues = new FieldValueCollection();
             }
         });
 

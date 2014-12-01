@@ -1,6 +1,5 @@
-﻿/// <reference path="../Items/ItemListView.js" />
-define(['underscore', 'backbone', 'text!templates/FormContents/FormContentViewTemplete.html', 'views/Items/ItemListView'],
-    function (_, Backbone, templete,ItemListView) {
+﻿define(['underscore', 'backbone', 'text!templates/FormContents/FormContentViewTemplete.html', 'views/Items/ItemListView', 'views/Items/ItemListDetailView',  'Repositories/FormRepository'],
+    function (_, Backbone, templete, ItemListView, ItemListDetailView, FromRepository) {
         var formConfigView = Backbone.View.extend({
 
             render: function (onRenderCompleted) {
@@ -9,8 +8,15 @@ define(['underscore', 'backbone', 'text!templates/FormContents/FormContentViewTe
                 onRenderCompleted(this.$el);
                 var formTable = new ItemListView();
                 formTable.render(function ($viewNode) {
-                    $('#header').append($viewNode);
+                    self.$('#header').append($viewNode);
                 });
+                var getFieldContent = FromRepository.GetFieldValueCollection();
+                for (var key in getFieldContent) {
+                    var formTableDetail = new ItemListDetailView({ model: getFieldContent[key] });
+                    formTableDetail.render(function ($viewNode) {
+                        self.$('#body').append($viewNode);
+                    });
+                }
             }
         });
 

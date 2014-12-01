@@ -6,29 +6,24 @@
             },
             render: function (onRenderCompleted) {
                 var self = this;
+                self.$el.html(templete);
                 FromRepository.GetDefaultFormContent(new Date().getTime(), function (formContent) {
                     self.model = formContent;
-                    self.model.AddFields.each(function (fieldValue) {
-                        var view = FieldValueFactory.GetView(fieldValue);
+                    self.model.FieldValues.each(function (fieldValue) {
+                        var value = fieldValue.toJSON();
+                        var field = FromRepository.GetField(value.Id, value.FieldId);
+                        var view = FieldValueFactory.GetView(field[0]);
                         view.render(function ($viewNode) {
                             self.$('#addItems').append($viewNode);
                         });
                     });
-                    onRenderCompleted(this.$el);
+                    onRenderCompleted(self.$el);
                 });
-                //  var self = this;
-                //  this.$el.html(templete);
-                //  this.Collection = FromRepository.AddFields("");
-                //for (var i = 0; i < this.Collection.length; i++) {
-                //    var view = FieldValueFactory.GetView(this.Collection[i]);
-                //      view.render(function ($viewNode) {
-                //          self.$('#addItems').append($viewNode);
-                //      });
-                //  }
+               
 
             },
             SaveItem: function (event) {
-                FromRepository.SaveFormContent(this.model, function () {
+                FromRepository.SaveFormContent(this.model.FieldValues, function () {
                 })
             }
         });

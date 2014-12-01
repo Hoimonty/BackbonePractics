@@ -4,7 +4,6 @@
 
         var _Forms = {};
         var _FormContents = {};
-       // var 
         var addedFieldCollectionList = new FieldCollection();
         var fieldCollectionList = new FieldCollection();
         var fieldValueCollection = new FieldValueCollection();
@@ -17,7 +16,7 @@
                 onSuccess(fieldCollectionList);
             },
             GetField: function (formId, fieldId, onSuccess) {
-                var field = _Forms[formId].Fields.where({ Id: fieldId });
+                var field = addedFieldCollectionList.where({ Id: fieldId });
                 return field;
             },
             SaveForm: function (fieldCollection, onSuccess) {
@@ -27,12 +26,16 @@
 
             },
             GetDefaultFormContent: function (formId, onSuccess) {
-               // var form = new Form();
-              //  Form = _Forms[formId];
-                onSuccess(Form, Form.CreateDefaultFormContent());
+                var form = new Form({ 'Id': formId });
+                form.Fields = addedFieldCollectionList.toJSON();
+                onSuccess(form.CreateDefaultFormContent(form));
             },
             SaveFormContent: function (formContent) {
-                _FormContents[formContent.Id] = formContent;
+                var FormId = new Date().getTime();
+                var formContent = new FormContent({ 'Id': new Date().getTime(), 'FormId': FormId });
+                formContent.FieldValues = fieldValueCollection.toJSON();
+                _FormContents[FormId] = formContent;
+                fieldValueCollection = new FieldValueCollection();
             },
             SaveFieldValue: function (fieldID, fieldValue) {
                 fieldValueCollection.add(new FieldValue({ 'Id': new Date().getTime(), 'FieldId': fieldID, 'Value': fieldValue }));
@@ -49,8 +52,5 @@
                 return _FormContents;
             }
         }
-
-
-
         return FormRepository;
     });

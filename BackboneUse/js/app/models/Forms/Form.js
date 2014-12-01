@@ -1,5 +1,5 @@
-﻿define(['underscore', 'backbone', 'models/Forms/FieldValues/FieldValueCollection', 'models/Forms/FormContent'],
-    function (_, Backbone, FieldCollection, FormContent) {
+﻿define(['underscore', 'backbone', 'models/Forms/Fields/FieldCollection', 'models/Forms/FormContent', 'models/Forms/FieldValues/FieldValue'],
+    function (_, Backbone, FieldCollection, FormContent, FieldValue) {
 
         var Form = Backbone.Model.extend({
             default: {
@@ -7,13 +7,17 @@
                 Fields: null
             },
             initialize: function () {
-                Fields = new FieldCollection();
+                this.Fields = new FieldCollection();
             },
-            CreateDefaultFormContent: function () {
-                var formContent = new FormContent({ 'Id': new Date().getTime(), FormId: this.Id });
-                this.Fields.each(function (field) {
-                    formContent.FieldValues.add(field.CreateDefaultValue());
-                });
+            CreateDefaultFormContent: function (form) {
+                var formContent = new FormContent({ 'Id': new Date().getTime(), 'FormId': form.get('Id') });
+                // this.Fields.each(function (field) {
+                //  formContent.FieldValues.add(field.CreateDefaultValue());
+                //  });
+
+                for (var i = 0; i < form.Fields.length; i++) {
+                    formContent.FieldValues.add(new FieldValue({ 'Id': new Date().getTime(), 'FieldId': form.Fields[i].Id, 'Value': '' }));
+                }
                 return formContent;
             }
         });
