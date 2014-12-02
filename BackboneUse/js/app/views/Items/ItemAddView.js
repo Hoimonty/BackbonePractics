@@ -23,8 +23,22 @@
 
             },
             SaveItem: function (event) {
+                var fieldValues=this.model.FieldValues.models;
+                for (var i = 0; i < fieldValues.length; i++) {
+                    var fieldID = fieldValues[i].attributes.FieldId;
+                    var value = $("#" + fieldID).val();
+                    if ($("#" + fieldID).hasClass('chkBox')) {
+                        if ($("#" + fieldID).is(':checked'))
+                        { value = "true" }
+                        else
+                            value = "false";
+
+                    }
+                    fieldValues[i].attributes.Value = value;
+                }
                 FromRepository.SaveFormContent(this.model.FieldValues, function () {
-                })
+                });
+                this.render();
             }
         });
 

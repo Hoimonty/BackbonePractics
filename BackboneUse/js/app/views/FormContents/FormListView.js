@@ -1,7 +1,9 @@
-﻿define(['underscore', 'backbone', 'text!templates/FormContents/FormContentViewTemplete.html', 'views/Items/ItemListView', 'views/Items/ItemListDetailView',  'Repositories/FormRepository'],
-    function (_, Backbone, templete, ItemListView, ItemListDetailView, FromRepository) {
+﻿define(['underscore', 'backbone', 'text!templates/FormContents/FormContentViewTemplete.html', 'views/Items/ItemListView', 'views/Items/ItemListDetailView', 'Repositories/FormRepository', 'views/Items/ItemEditView'],
+    function (_, Backbone, templete, ItemListView, ItemListDetailView, FromRepository,ItemEditView) {
         var formConfigView = Backbone.View.extend({
-
+            events: {
+                'click .update': 'UpdateItem'
+            },
             render: function (onRenderCompleted) {
                 var self = this;
                 this.$el.html(templete);
@@ -17,7 +19,12 @@
                         self.$('#body').append($viewNode);
                     });
                 }
+            },
+            UpdateItem: function (event)
+            {
+                
             }
+
         });
 
         return formConfigView;

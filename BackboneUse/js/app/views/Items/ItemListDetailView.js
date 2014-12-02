@@ -12,6 +12,8 @@
                         { this.$el.append($(templete).find('#ItemList').tmpl(fieldvalue.FieldValues[e])); }
                     }
                 }
+                var ID=this.model.toJSON().Id;
+                this.$el.append($(templete).find('#ItemEdit').tmpl({ Id: ID }));
                 onRenderCompleted(this.$el);
             }
         });

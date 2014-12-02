@@ -10,18 +10,25 @@ define([
   'views/Forms/FormConfigView',
   'views/FormContents/FormListView',
   'views/Items/ItemAddView',
-], function ($, _, Backbone, ProductView, FormConfigView, FormListView, itemAddView) {
+  'views/Items/ItemEditView'
+], function ($, _, Backbone, ProductView, FormConfigView, FormListView, itemAddView, ItemEditView) {
 
     var AppRouter = Backbone.Router.extend({
         routes: {
             'New': 'ItemAddView',
             'Configuration': 'configurationForm',
+            'ItemEdit/:id': 'ItemEdit',
             '*actions': 'ListView'
         },
         initialize: function () {
             Backbone.history.start();
         },
-
+        ItemEdit: function (id) {
+            var formTableDetail = new ItemEditView({ key: id });
+            formTableDetail.render(function ($viewNode) {
+                $('#page').html($viewNode);
+            });
+        },
         addProduct: function () {
             var addProductView = new ProductView();
             addProductView.render(function ($viewNode) {
@@ -39,14 +46,14 @@ define([
             formListView.render(function ($viewNode) {
                 $('#page').html($viewNode);
             });
-          
+
         },
         ItemAddView: function () {
             var addView = new itemAddView();
             addView.render(function ($viewNode) {
                 $('#page').html($viewNode);
             });
-          
+
         }
     });
 

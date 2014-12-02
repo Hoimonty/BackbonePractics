@@ -30,10 +30,10 @@
                 form.Fields = addedFieldCollectionList.toJSON();
                 onSuccess(form.CreateDefaultFormContent(form));
             },
-            SaveFormContent: function (formContent) {
+            SaveFormContent: function (Content) {
                 var FormId = new Date().getTime();
                 var formContent = new FormContent({ 'Id': new Date().getTime(), 'FormId': FormId });
-                formContent.FieldValues = fieldValueCollection.toJSON();
+                formContent.FieldValues = Content.toJSON();
                 _FormContents[FormId] = formContent;
                 fieldValueCollection = new FieldValueCollection();
             },
@@ -50,7 +50,11 @@
             },
             GetFieldValueCollection: function () {
                 return _FormContents;
+            },
+            UpdateFormContent: function (fieldValues,key) {
+                _FormContents[key].FieldValues = fieldValues;
             }
+
         }
         return FormRepository;
     });
