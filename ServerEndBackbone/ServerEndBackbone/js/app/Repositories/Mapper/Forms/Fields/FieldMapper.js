@@ -1,17 +1,24 @@
 ﻿define([
-    'jqeury', 'backbone', 'models/Forms/Fields/Field', 'models/Forms/Fields/FieldCollection'],
+    'jquery', 'backbone', 'models/Forms/Fields/Field', 'models/Forms/Fields/FieldCollection'],
     function ($, Backbone, Field, FieldCollection) {
 
 
         function MapToModel(contract) {
+            return new Field(contract);
         }
 
-        function MapToModels(contracts) {
+        function MapToCollection(contracts) {
             var fieldCollection = new FieldCollection();
-            
+            $.each(contracts, function (index, contract) {
+                fieldCollection.add(MapToModel(contract));
+            });
+            return fieldCollection;
         }
+      
 
         return {
-            MapToMode: MapToModel
+            MapToModel: MapToModel,
+            MapToCollection: MapToCollection,
+          
         };
     })

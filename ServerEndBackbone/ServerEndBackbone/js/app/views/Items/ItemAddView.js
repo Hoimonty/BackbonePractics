@@ -11,12 +11,15 @@
                     self.model = formContent;
                     self.model.FieldValues.each(function (fieldValue) {
                         var value = fieldValue.toJSON();
-                        var field = FromRepository.GetField(value.Id, value.FieldId);
-                        var view = FieldValueFactory.GetView(field[0]);
-                        view.render(function ($viewNode) {
-                            self.$('#addItems').append($viewNode);
+
+                        FromRepository.GetField(value.Id, value.FieldId, function (field) {
+                            var view = FieldValueFactory.GetView(field.toJSON());
+                            view.render(function ($viewNode) {
+                                self.$('#addItems').append($viewNode);
+                            });
                         });
-                    });
+                        });
+                       
                     onRenderCompleted(self.$el);
                 });
                

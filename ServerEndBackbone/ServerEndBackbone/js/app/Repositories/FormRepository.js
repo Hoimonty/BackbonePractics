@@ -1,45 +1,39 @@
 ﻿define([
-    'underscore', 'backbone', 'models/Forms/Fields/Field', 'models/Forms/Fields/FieldCollection', 'models/Forms/FieldValues/FieldValue', 'models/Forms/FieldValues/FieldValueCollection', 'models/Forms/Form', 'models/Forms/FormContent'],
-    function (_, Backboone, Field, FieldCollection, FieldValue, FieldValueCollection, Form,FormContent) {
+    'underscore', 'backbone', 'models/Forms/Fields/Field', 'models/Forms/Fields/FieldCollection', 'models/Forms/FieldValues/FieldValue', 'models/Forms/FieldValues/FieldValueCollection', 'models/Forms/Form', 'models/Forms/FormContent', 'Repositories/Mapper/Forms/Fields/FieldMapper'],
+    function (_, Backboone, Field, FieldCollection, FieldValue, FieldValueCollection, Form,FormContent,FieldMapper) {
 
         var _Forms = {};
         var _FormContents = {};
         var addedFieldCollectionList = new FieldCollection();
         //var fieldCollectionList = new FieldCollection();
         var fieldValueCollection = new FieldValueCollection();
-        //fieldCollectionList.add(new Field({ 'Id': 1, 'Type': 'SingleLineText' }));
-        //fieldCollectionList.add(new Field({ 'Id': 3, 'Type': 'Checkbox' }));
-        //fieldCollectionList.add(new Field({ 'Id': 2, 'Type': 'Number' }));
-       
-        $.ajax({
-            url: "/Home/GetFieldCollections",
-            type: "GET",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                fieldCollectionList=result;
-            }
-        });
-
-
-
         var FormRepository = {
             GetAllowedFields: function (onSuccess) {
-                onSuccess(fieldCollectionList);
+                $.ajax({
+                    url: "/Home/GetFieldCollections",
+                    async: false,
+                    success: function (result) {
+                        var fieldMapper = FieldMapper.MapToCollection(result);
+                        onSuccess(fieldMapper);
+                    }
+                });
             },
-            //GetAllowedFields: function (onSuccess) {
-            //    $.ajax({
-            //        url: "/Home/GetFieldCollections",
-            //        type: "GET",
-            //        contentType: "application/json; charset=utf-8",
-            //        success: function (result) {
-            //            onSuccess(result);
-            //        }
-            //    });
-                
-            //},
             GetField: function (formId, fieldId, onSuccess) {
-                var field = addedFieldCollectionList.where({ Id: fieldId });
-                return field;
+                $.ajax({
+                    url: "/Home/GetConfigureFields",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify({ Id: fieldId.toString() }),
+                    async: false,
+                    success: function (result) {
+                        var fieldMapper = FieldMapper.MapToModel(result);
+                        onSuccess(fieldMapper);
+                    }
+                   
+                });
+               
+               // var field = addedFieldCollectionList.where({ Id: fieldId });
+              //  return field;
             },
             SaveForm: function (fieldCollection, onSuccess) {
                 var id = new Date().getTime();
@@ -75,7 +69,20 @@
             },
             UpdateFormContent: function (fieldValues,key) {
                 _FormContents[key].FieldValues = fieldValues;
+            },
+            SaveConfigureFormFields: function (Fields) {
+                $.ajax({
+                    url: "/Home/AddConfigureFormFields",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify({ formFields: Fields }),
+                    async: false,
+                    success: function (result) {
+                        alert(result);
+                    }
+                });
             }
+
 
         }
         return FormRepository;

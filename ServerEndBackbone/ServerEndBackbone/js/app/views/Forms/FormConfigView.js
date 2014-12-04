@@ -3,8 +3,8 @@
 define(['underscore', 'backbone', 'jquery_ui', 'text!templates/Forms/FormConfigTemplete.html', 'Repositories/FormRepository',  'views/Forms/Fields/FieldViewFactory'],
     function (_, Backbone, Jquery_UI, templete, FromRepository, FieldViewFactory) {
         var formConfigView = Backbone.View.extend({
-            event: {
-                'click #btnSave': 'SaveItem'
+            events: {
+                'click #btnFieldSave': 'SaveFieldItem'
             },
             render: function (onRenderCompleted) {
                 var self = this;
@@ -40,9 +40,9 @@ define(['underscore', 'backbone', 'jquery_ui', 'text!templates/Forms/FormConfigT
                 });
                 onRenderCompleted(this.$el);
             },
-            SaveItem: function (event) {
-                var allCollection = FromRepository.AddAllowedFields("");
-                FromRepository.SaveForm(allCollection);
+            SaveFieldItem: function (event) {
+                var allCollection = FromRepository.AddFields("");
+                FromRepository.SaveConfigureFormFields(allCollection);
             }
         });
 

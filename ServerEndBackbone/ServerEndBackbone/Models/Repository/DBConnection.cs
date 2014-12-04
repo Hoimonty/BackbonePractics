@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using ServerEndBackbone.Properties;
 using System;
 using System.Collections.Generic;
@@ -9,24 +10,31 @@ namespace ServerEndBackbone.Models.Repository
 {
     public class DBConnection
     {
+        #region Member
         public MongoDatabase MogoDatabase;
-        public MongoCollection PracticsCollection;
+        public MongoCollection FieldCollection;
+        public MongoCollection ConfigureFormCollection;
         public bool ServerIsDown = false;
+        #endregion
+
+        #region Method
         public DBConnection()
         {
+
             var mongoClient = new MongoClient(Settings.Default.PracticsConnectionString);
             var server = mongoClient.GetServer();
             MogoDatabase = server.GetDatabase(Settings.Default.DB);
-            PracticsCollection = MogoDatabase.GetCollection("Practics");
+            FieldCollection = MogoDatabase.GetCollection("Fields");
+            ConfigureFormCollection = MogoDatabase.GetCollection("ConfigureFormFields");
             try
             {
                 MogoDatabase.Server.Ping();
             }
             catch (Exception ex)
             {
-                
                 ServerIsDown = true;
             }
         }
+        #endregion
     }
 }

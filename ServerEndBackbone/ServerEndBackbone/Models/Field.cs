@@ -8,8 +8,8 @@ namespace ServerEndBackbone.Models
 {
     public class Field
     {
-         [BsonId]
-        public int Id { get; set; }
+        [BsonId]
+        public string Id { get; set; }
         public string Type { get; set; }
         public string Description { get; set; }
     }

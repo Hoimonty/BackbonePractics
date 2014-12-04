@@ -4,7 +4,8 @@
 
         var FieldValueViewFactory = {
             GetView: function (model, mood) {
-                var Model=model.toJSON();
+                var Model = model;
+             
                 var params = JSON.stringify(model);
                 if (Model.Type == 'SingleLineText') {
                     return new SingleLineTextView({ model: Model });

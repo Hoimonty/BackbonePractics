@@ -24,22 +24,22 @@ namespace ServerEndBackbone.Controllers
         public JsonResult GetFieldCollections()
         {
            
-            fieldCollectionList.Add(new Field { Id = 1, Type = "SingleLineText" });
-            fieldCollectionList.Add(new Field { Id = 1, Type = "Checkbox" });
-            fieldCollectionList.Add(new Field { Id = 1, Type = "Number" });
-            GetAllEmployees();
-            return Json(fieldCollectionList);
+            fieldCollectionList.Add(new Field { Id = "1", Type = "SingleLineText" });
+            fieldCollectionList.Add(new Field { Id = "2", Type = "Checkbox" });
+            fieldCollectionList.Add(new Field { Id = "3", Type = "Number" });
+            var fields= GetAllFields();
+            return Json(fields, JsonRequestBehavior.AllowGet);
         }
 
-        public IEnumerable<Field> GetAllEmployees()
+        public IEnumerable<Field> GetAllFields()
         {
             if (context.ServerIsDown) return null;
             List<Field> newfieldCollectionList = new List<Field>();
-            if (Convert.ToInt32(context.PracticsCollection.Count()) > 0)
+            if (Convert.ToInt32(context.FieldCollection.Count()) > 0)
             {
                
 
-                var fields = context.PracticsCollection.FindAs(typeof(Field), Query.NE("Type", "null"));
+                var fields = context.FieldCollection.FindAs(typeof(Field), Query.NE("Type", "null"));
                 if (fields.Count() > 0)
                 {
                     foreach (Field field in fields)
@@ -52,12 +52,12 @@ namespace ServerEndBackbone.Controllers
             {
                 #region add test data if DB is empty
 
-               context.PracticsCollection.RemoveAll();
-               foreach (var employee in fieldCollectionList)
+               context.FieldCollection.RemoveAll();
+               foreach (var field in fieldCollectionList)
                 {
-                    newfieldCollectionList.Add(employee);
+                    newfieldCollectionList.Add(field);
 
-                    Add(employee); // add data to mongo db also
+                    Add(field); // add data to mongo db also
                 }
 
                 #endregion
@@ -67,11 +67,43 @@ namespace ServerEndBackbone.Controllers
             return result;
         }
 
-        public Field Add(Field employee)
+        public Field Add(Field field)
         {
+            var a = new Random();
+            context.FieldCollection.Save(field);
+            return field;
+        }
 
-            context.PracticsCollection.Save(employee);
-            return employee;
+        public JsonResult AddConfigureFormFields(List<Field> formFields)
+        {
+            try
+            {
+                if (formFields.Count > 0)
+                {
+                    foreach (var item in formFields)
+                    {
+                        context.ConfigureFormCollection.Save(item);
+                    }
+                    return Json("Save Successfull", JsonRequestBehavior.AllowGet);
+                }
+                else
+                    return Json("List is blank", JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message, JsonRequestBehavior.AllowGet);
+            }
+            
+        }
+
+        public JsonResult GetConfigureFields(string Id)
+        {
+            if (string.IsNullOrEmpty(Id))
+            {
+                throw new ArgumentNullException("id", "Field Id is empty!");
+            }
+            var field = (Field) context.ConfigureFormCollection.FindOneAs(typeof(Field), Query.EQ("_id", Id));
+            return Json(field,JsonRequestBehavior.AllowGet);
         }
 
 
