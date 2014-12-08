@@ -15,15 +15,15 @@
                 var self = this;
                 self.$el.html(templete);
                 for (var i = 0; i < self.model.FieldValues.length; i++) {
-                    var field = FromRepository.GetField(self.model.FieldValues[i].Id, self.model.FieldValues[i].FieldId);
-                    var view = FieldValueFactory.GetView(field[0]);
-                    view.render(function ($viewNode) {
-                        self.$('#addItems').append($viewNode);
-                        self.$("#" + self.model.FieldValues[i].FieldId).val(self.model.FieldValues[i].Value);
-                        if (self.model.FieldValues[i].Value =="true")
-                        {
-                            self.$("#" + self.model.FieldValues[i].FieldId).attr('checked', true);
-                        }
+                    FromRepository.GetField(self.model.FieldValues[i].Id, self.model.FieldValues[i].FieldId, function (field) {
+                        var view = FieldValueFactory.GetView(field.toJSON());
+                        view.render(function ($viewNode) {
+                            self.$('#addItems').append($viewNode);
+                            self.$("#" + self.model.FieldValues[i].FieldId).val(self.model.FieldValues[i].Value);
+                            if (self.model.FieldValues[i].Value == "true") {
+                                self.$("#" + self.model.FieldValues[i].FieldId).attr('checked', true);
+                            }
+                        });
                     });
                 }
                 onRenderCompleted(self.$el);

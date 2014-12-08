@@ -11,10 +11,10 @@ namespace ServerEndBackbone.Controllers
 {
     public class HomeController : Controller
     {
+        #region Member
         DBConnection context = new DBConnection();
         List<Field> fieldCollectionList = new List<Field>();
-        //
-        // GET: /Home/
+        #endregion
 
         public ActionResult Index()
         {
@@ -37,8 +37,6 @@ namespace ServerEndBackbone.Controllers
             List<Field> newfieldCollectionList = new List<Field>();
             if (Convert.ToInt32(context.FieldCollection.Count()) > 0)
             {
-               
-
                 var fields = context.FieldCollection.FindAs(typeof(Field), Query.NE("Type", "null"));
                 if (fields.Count() > 0)
                 {
@@ -51,15 +49,12 @@ namespace ServerEndBackbone.Controllers
             else
             {
                 #region add test data if DB is empty
-
                context.FieldCollection.RemoveAll();
                foreach (var field in fieldCollectionList)
                 {
                     newfieldCollectionList.Add(field);
-
                     Add(field); // add data to mongo db also
                 }
-
                 #endregion
             }
 
@@ -69,7 +64,6 @@ namespace ServerEndBackbone.Controllers
 
         public Field Add(Field field)
         {
-            var a = new Random();
             context.FieldCollection.Save(field);
             return field;
         }
@@ -100,12 +94,58 @@ namespace ServerEndBackbone.Controllers
         {
             if (string.IsNullOrEmpty(Id))
             {
-                throw new ArgumentNullException("id", "Field Id is empty!");
+                return Json(new ArgumentNullException("id", "Field Id is empty!"), JsonRequestBehavior.AllowGet);
             }
             var field = (Field) context.ConfigureFormCollection.FindOneAs(typeof(Field), Query.EQ("_id", Id));
             return Json(field,JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult SaveFormContents(FormContent formContents)
+        {
+            try
+            {
+                if (formContents!=null)
+                {
+                    context.FormContentCollection.Save(formContents);
+                    return Json("Save Successfull", JsonRequestBehavior.AllowGet);
+                }
+                else
+                    return Json("List is blank", JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public JsonResult GetFormContents(string Id)
+        {
+            if (string.IsNullOrEmpty(Id))
+            {
+                var formContents = context.FormContentCollection.FindAllAs(typeof(FormContent));
+                return Json(formContents, JsonRequestBehavior.AllowGet);
+            }
+            var formContent = (FormContent)context.ConfigureFormCollection.FindOneAs(typeof(Field), Query.EQ("_id", Id));
+            return Json(formContent, JsonRequestBehavior.AllowGet);
+        }
 
+        public JsonResult DeleteFormContentList(string Id)
+        {
+            try
+            {
+                context.FormContentCollection.Remove(Query.EQ("FormId", Id));
+                return Json("Delete Successfull", JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return Json("Delete item failled", JsonRequestBehavior.AllowGet);
+            }
+           
+        }
+
+        public JsonResult UpdateFormContent(FormContent formContents)
+        {
+            context.FormContentCollection.Save(formContents);
+            return Json("Update Successfull", JsonRequestBehavior.AllowGet);
+        }
     }
 }

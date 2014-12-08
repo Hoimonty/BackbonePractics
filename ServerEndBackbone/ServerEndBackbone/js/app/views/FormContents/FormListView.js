@@ -1,6 +1,9 @@
 ﻿define(['underscore', 'backbone', 'text!templates/FormContents/FormContentViewTemplete.html', 'views/Items/ItemListView', 'views/Items/ItemListDetailView', 'Repositories/FormRepository', 'views/Items/ItemEditView'],
     function (_, Backbone, templete, ItemListView, ItemListDetailView, FromRepository,ItemEditView) {
         var formConfigView = Backbone.View.extend({
+            events: {
+                'click .delete': 'DeleteItem'
+            },
             render: function (onRenderCompleted) {
                 var self = this;
                 this.$el.html(templete);
@@ -16,6 +19,11 @@
                         self.$('#body').append($viewNode);
                     });
                 }
+            },
+            DeleteItem: function (event)
+            {
+                var Id = $(event.currentTarget).data('id');
+                FromRepository.DeleteFormContent(Id);
             }
 
         });

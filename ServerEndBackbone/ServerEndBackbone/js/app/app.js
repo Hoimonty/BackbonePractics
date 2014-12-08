@@ -18,6 +18,7 @@ define([
             'New': 'ItemAddView',
             'Configuration': 'configurationForm',
             'ItemEdit/:id': 'ItemEdit',
+            'ItemDelete': 'ItemDelete',
             '*actions': 'ListView'
         },
         initialize: function () {
@@ -54,6 +55,10 @@ define([
                 $('#page').html($viewNode);
             });
 
+        },
+        ItemDelete: function ()
+        {
+            this.ListView();
         }
     });
 

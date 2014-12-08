@@ -14,6 +14,7 @@ namespace ServerEndBackbone.Models.Repository
         public MongoDatabase MogoDatabase;
         public MongoCollection FieldCollection;
         public MongoCollection ConfigureFormCollection;
+        public MongoCollection FormContentCollection;
         public bool ServerIsDown = false;
         #endregion
 
@@ -26,6 +27,7 @@ namespace ServerEndBackbone.Models.Repository
             MogoDatabase = server.GetDatabase(Settings.Default.DB);
             FieldCollection = MogoDatabase.GetCollection("Fields");
             ConfigureFormCollection = MogoDatabase.GetCollection("ConfigureFormFields");
+            FormContentCollection = MogoDatabase.GetCollection("FormContents");
             try
             {
                 MogoDatabase.Server.Ping();

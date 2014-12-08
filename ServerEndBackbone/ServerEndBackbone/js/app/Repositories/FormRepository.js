@@ -48,10 +48,21 @@
             },
             SaveFormContent: function (Content) {
                 var FormId = new Date().getTime();
-                var formContent = new FormContent({ 'Id': new Date().getTime(), 'FormId': FormId });
+                var formContent = new FormContent({ 'Id': new Date().getTime(), 'FormId': FormId, 'FieldValues': Content.toJSON() });
                 formContent.FieldValues = Content.toJSON();
                 _FormContents[FormId] = formContent;
                 fieldValueCollection = new FieldValueCollection();
+                $.ajax({
+                    url: "/Home/SaveFormContents",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify({ formContents: formContent }),
+                    async: false,
+                    success: function (result) {
+                        //alert(result);
+                    }
+                });
+                return;
             },
             SaveFieldValue: function (fieldID, fieldValue) {
                 fieldValueCollection.add(new FieldValue({ 'Id': new Date().getTime(), 'FieldId': fieldID, 'Value': fieldValue }));
@@ -65,10 +76,30 @@
                 return addedFieldCollectionList.toJSON();
             },
             GetFieldValueCollection: function () {
+                //$.ajax({
+                //    url: "/Home/GetFormContents",
+                //    async: false,
+                //    success: function (result) {
+                //        for (var i = 0; i < result.length; i++) {
+                //            _FormContents[result[i].FormId] = result[i];
+                //        }
+                //    }
+                //});
                 return _FormContents;
             },
             UpdateFormContent: function (fieldValues,key) {
                 _FormContents[key].FieldValues = fieldValues;
+                _FormContents[key].set({ 'FieldValues': fieldValues });
+                $.ajax({
+                    url: "/Home/UpdateFormContent",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify({ formContents: _FormContents[key] }),
+                    async: false,
+                    success: function (result) {
+                        //alert(result);
+                    }
+                });
             },
             SaveConfigureFormFields: function (Fields) {
                 $.ajax({
@@ -78,11 +109,25 @@
                     data: JSON.stringify({ formFields: Fields }),
                     async: false,
                     success: function (result) {
+                      
                         alert(result);
                     }
                 });
-            }
+            },
+            DeleteFormContent: function (FormId) {
+                $.ajax({
+                    url: "/Home/DeleteFormContentList",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify({ Id: FormId.toString() }),
+                    async: false,
+                    success: function (result) {
+                        delete _FormContents[FormId];
+                        alert(result);
+                    }
 
+                });
+            }
 
         }
         return FormRepository;
